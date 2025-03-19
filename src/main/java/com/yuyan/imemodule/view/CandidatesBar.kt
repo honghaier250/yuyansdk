@@ -240,9 +240,23 @@ class CandidatesBar(context: Context?, attrs: AttributeSet?) : RelativeLayout(co
         if (container is ClipBoardContainer) {
             showViewVisibility(mCandidatesMenuContainer)
             mCandidatesMenuAdapter.items = if(container.getMenuMode() == SkbMenuMode.ClipBoard) {
-                listOf(menuSkbFunsPreset[SkbMenuMode.ClearClipBoard]!!, menuSkbFunsPreset[SkbMenuMode.ClipBoard]!!, menuSkbFunsPreset[SkbMenuMode.Phrases]!!, menuSkbFunsPreset[SkbMenuMode.LockClipBoard]!!)
+                listOf(
+                    // 在剪贴板界面显示的菜单项，确保AI按钮始终显示在列表中
+                    menuSkbFunsPreset[SkbMenuMode.ClearClipBoard]!!,
+                    menuSkbFunsPreset[SkbMenuMode.ClipBoard]!!,
+                    menuSkbFunsPreset[SkbMenuMode.Phrases]!!,
+                    menuSkbFunsPreset[SkbMenuMode.LockClipBoard]!!,
+                    menuSkbFunsPreset[SkbMenuMode.AI]!!
+                )
             } else {
-                listOf(menuSkbFunsPreset[SkbMenuMode.AddPhrases]!!, menuSkbFunsPreset[SkbMenuMode.ClipBoard]!!, menuSkbFunsPreset[SkbMenuMode.Phrases]!!, menuSkbFunsPreset[SkbMenuMode.LockClipBoard]!!)
+                listOf(
+                    // 在短语界面显示的菜单项，确保AI按钮始终显示在列表中
+                    menuSkbFunsPreset[SkbMenuMode.AddPhrases]!!,
+                    menuSkbFunsPreset[SkbMenuMode.ClipBoard]!!,
+                    menuSkbFunsPreset[SkbMenuMode.Phrases]!!,
+                    menuSkbFunsPreset[SkbMenuMode.LockClipBoard]!!,
+                    menuSkbFunsPreset[SkbMenuMode.AI]!!
+                )
             }
         } else if (DecodingInfo.isCandidatesListEmpty) {
             mRightArrowBtn.drawable.setLevel(0)
@@ -254,6 +268,12 @@ class CandidatesBar(context: Context?, attrs: AttributeSet?) : RelativeLayout(co
                 val skbFunItem = menuSkbFunsPreset[skbMenuMode]
                 if (skbFunItem != null) {
                     mFunItems.add(skbFunItem)
+                }
+            }
+            // 确保AI按钮始终显示在列表中，但保持在原来的位置
+            if (!mFunItems.any { it.skbMenuMode == SkbMenuMode.AI }) {
+                menuSkbFunsPreset[SkbMenuMode.AI]?.let { aiFunItem ->
+                    mFunItems.add(aiFunItem)
                 }
             }
             mCandidatesMenuAdapter.items = mFunItems
@@ -273,7 +293,12 @@ class CandidatesBar(context: Context?, attrs: AttributeSet?) : RelativeLayout(co
      */
     fun showEmoji() {
         showViewVisibility(mCandidatesMenuContainer)
-        mCandidatesMenuAdapter.items = listOf(menuSkbFunsPreset[SkbMenuMode.Emoticon]!!,menuSkbFunsPreset[SkbMenuMode.Emojicon]!!)
+        // 确保AI按钮在表情界面也能显示
+        mCandidatesMenuAdapter.items = listOf(
+            menuSkbFunsPreset[SkbMenuMode.Emoticon]!!,
+            menuSkbFunsPreset[SkbMenuMode.Emojicon]!!,
+            menuSkbFunsPreset[SkbMenuMode.AI]!!
+        )
         activeCandNo = 0
         mCandidatesAdapter.activeCandidates(activeCandNo)
         mCandidatesAdapter.notifyChanged()
@@ -311,6 +336,34 @@ class CandidatesBar(context: Context?, attrs: AttributeSet?) : RelativeLayout(co
      */
     fun isActiveCand():Boolean {
         return activeCandNo > 0
+    }
+
+    /**
+     * 显示AI功能
+     */
+    fun showAI() {
+        showViewVisibility(mCandidatesMenuContainer)
+        // 获取当前的菜单项列表
+        val mFunItems: MutableList<SkbFunItem> = mutableListOf()
+        val barMenus = DataBaseKT.instance.skbFunDao().getALlBarMenu()
+        for (item in barMenus) {
+            val skbMenuMode = SkbMenuMode.decode(item.name)
+            val skbFunItem = menuSkbFunsPreset[skbMenuMode]
+            if (skbFunItem != null) {
+                mFunItems.add(skbFunItem)
+            }
+        }
+        // 确保AI按钮始终显示在列表中
+        if (!mFunItems.any { it.skbMenuMode == SkbMenuMode.AI }) {
+            menuSkbFunsPreset[SkbMenuMode.AI]?.let { aiFunItem ->
+                mFunItems.add(aiFunItem)
+            }
+        }
+        mCandidatesMenuAdapter.items = mFunItems
+        activeCandNo = 0
+        mCandidatesAdapter.activeCandidates(activeCandNo)
+        mCandidatesAdapter.notifyChanged()
+        mCandidatesMenuAdapter.notifyChanged()
     }
 
     /**
