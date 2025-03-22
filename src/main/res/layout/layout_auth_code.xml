@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="12dp">
+
+    <!-- 标题 -->
+    <TextView
+        android:id="@+id/tv_auth_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="授权码管理"
+        android:textSize="18sp" />
+
+    <!-- 授权状态 -->
+    <TextView
+        android:id="@+id/tv_auth_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="请输入授权码"
+        android:textSize="15sp" />
+
+    <!-- 授权码输入框 -->
+    <EditText
+        android:id="@+id/et_auth_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="请输入授权码"
+        android:inputType="textVisiblePassword"
+        android:padding="6dp" />
+
+    <!-- 激活按钮 -->
+    <Button
+        android:id="@+id/btn_activate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="激活授权码" />
+
+</LinearLayout>
