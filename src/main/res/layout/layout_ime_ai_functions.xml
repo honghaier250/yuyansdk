@@ -15,10 +15,38 @@
         android:textSize="16sp"
         android:textStyle="bold" />
 
+    <!-- 添加授权状态和授权码按钮 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:id="@+id/tv_auth_status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="授权状态"
+            android:textSize="14sp"
+            android:layout_gravity="center_vertical" />
+
+        <Button
+            android:id="@+id/btn_auth_code"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:text="激活授权码"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp" />
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_ai_functions"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="4dp" />
 
 </LinearLayout>
